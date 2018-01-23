@@ -31,10 +31,7 @@ def store_data(queue2, db_proxy_num):
     while True:
         try:
             proxy = queue2.get(timeout=300)
-            now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
-            print(now+": proxy:" + proxy)
             if proxy:
-
                 sqlhelper.insert(proxy)
                 successNum += 1
             else:
