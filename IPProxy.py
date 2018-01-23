@@ -29,6 +29,8 @@ if __name__ == "__main__":
     p2.start()
     p3.start()
     while True:
+        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+        print("sleep start:" + now)
         time.sleep(UPDATE_TIME)
         now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
         print("sleep finish:" + now)
