@@ -11,7 +11,7 @@ from db.SqlHelper import Proxy
 
 urls = (
     '/', 'select',
-    '/delete', 'delete'
+    '/delete', 'delete',
     '/validate', 'validate'
 )
 
@@ -47,7 +47,7 @@ class validate(object):
         sleep_condition.acquire()
         sleep_condition.notify()
         sleep_condition.release()
-
+        return "ok"
 
 if __name__ == '__main__':
     sys.argv.append('0.0.0.0:8000')

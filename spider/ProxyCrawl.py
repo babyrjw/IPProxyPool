@@ -1,4 +1,5 @@
 # coding:utf-8
+import datetime
 from gevent import monkey
 monkey.patch_all()
 
@@ -41,7 +42,8 @@ class ProxyCrawl(object):
         while True:
             self.proxies.clear()
             str = 'IPProxyPool----->>>>>>>>beginning'
-            sys.stdout.write(str + "\r\n")
+            now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+            sys.stdout.write(now+":"+str + "\r\n")
             sys.stdout.flush()
             proxylist = sqlhelper.select()
 
@@ -53,10 +55,12 @@ class ProxyCrawl(object):
                     spawns= []
             gevent.joinall(spawns)
             self.db_proxy_num.value = len(self.proxies)
-            str = 'IPProxyPool----->>>>>>>>db exists ip:%d' % len(self.proxies)
+            now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+            str = now+':IPProxyPool----->>>>>>>>db exists ip:%d' % len(self.proxies)
 
             if len(self.proxies) < MINNUM:
-                str += '\r\nIPProxyPool----->>>>>>>>now ip num < MINNUM,start crawling...'
+                now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+                str += '\r\n'+now+':IPProxyPool----->>>>>>>>now ip num < MINNUM,start crawling...'
                 sys.stdout.write(str + "\r\n")
                 sys.stdout.flush()
                 spawns = []
@@ -67,7 +71,8 @@ class ProxyCrawl(object):
                         spawns= []
                 gevent.joinall(spawns)
             else:
-                str += '\r\nIPProxyPool----->>>>>>>>now ip num meet the requirement,wait UPDATE_TIME...'
+                now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+                str += '\r\n'+now+':IPProxyPool----->>>>>>>>now ip num meet the requirement,wait UPDATE_TIME...'
                 sys.stdout.write(str + "\r\n")
                 sys.stdout.flush()
 

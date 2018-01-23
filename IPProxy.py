@@ -4,6 +4,8 @@ from multiprocessing import Value, Queue, Process, Condition, Lock
 
 import time
 
+import datetime
+
 from api.apiServer import start_api_server
 from db.DataStore import store_data
 
@@ -28,6 +30,8 @@ if __name__ == "__main__":
     p3.start()
     while True:
         time.sleep(UPDATE_TIME)
+        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+        print("sleep finish:" + now)
         sleep_condition.acquire()
         sleep_condition.notify()
         sleep_condition.release()
