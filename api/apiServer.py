@@ -12,10 +12,14 @@ from db.SqlHelper import Proxy
 urls = (
     '/', 'select',
     '/delete', 'delete'
+    '/validate', 'validate'
 )
 
+sleep_condition = None
 
-def start_api_server():
+def start_api_server(condition):
+    global sleep_condition
+    sleep_condition = condition
     sys.argv.append('0.0.0.0:%s' % config.API_PORT)
     app = web.application(urls, globals())
     app.run()
@@ -35,6 +39,14 @@ class delete(object):
         inputs = web.input()
         json_result = json.dumps(sqlhelper.delete(inputs))
         return json_result
+
+
+class validate(object):
+    def GET(self):
+        global sleep_condition
+        sleep_condition.acquire()
+        sleep_condition.notify()
+        sleep_condition.release()
 
 
 if __name__ == '__main__':

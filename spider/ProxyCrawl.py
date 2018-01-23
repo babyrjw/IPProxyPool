@@ -21,19 +21,20 @@ from validator.Validator import validator, getMyIP, detect_from_db
 '''
 
 
-def startProxyCrawl(queue, db_proxy_num,myip):
-    crawl = ProxyCrawl(queue, db_proxy_num,myip)
+def startProxyCrawl(queue, db_proxy_num, myip, sleep_condition):
+    crawl = ProxyCrawl(queue, db_proxy_num,myip, sleep_condition)
     crawl.run()
 
 
 class ProxyCrawl(object):
     proxies = set()
 
-    def __init__(self, queue, db_proxy_num,myip):
+    def __init__(self, queue, db_proxy_num, myip, sleep_condition):
         self.crawl_pool = Pool(THREADNUM)
         self.queue = queue
         self.db_proxy_num = db_proxy_num
         self.myip = myip
+        self.sleep_condition = sleep_condition
 
 
     def run(self):
@@ -70,7 +71,10 @@ class ProxyCrawl(object):
                 sys.stdout.write(str + "\r\n")
                 sys.stdout.flush()
 
-            time.sleep(UPDATE_TIME)
+            #time.sleep(UPDATE_TIME)
+            self.sleep_condition.acquire()
+            self.sleep_condition.wait()
+            self.sleep_condition.release()
 
     def crawl(self, parser):
         html_parser = Html_Parser()
