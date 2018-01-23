@@ -2,6 +2,7 @@
 import sys
 
 import chardet
+import datetime
 from gevent import monkey
 monkey.patch_all()
 
@@ -141,6 +142,8 @@ def _checkHttpProxy(selfip, proxies, isHttp=True):
     try:
         start = time.time()
         r = requests.get(url=test_url, headers=config.get_header(), timeout=config.TIMEOUT, proxies=proxies)
+        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+        print("check result:" + r)
         if r.ok:
             speed = round(time.time() - start, 2)
             content = json.loads(r.text)
